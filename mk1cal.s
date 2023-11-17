@@ -34,6 +34,7 @@ loop:
   add   r9, r9, r6  @ c = (woff + d)
   sub   r9, r9, #1  @ c = (woff + d - 1)
   add   r9, r9, #7  @ c = (woff + d - 1 + 7)
+  add   r9, r9, #6  @ c = (woff + d - 1 + 7 + 6), 月曜始まりにする
   mov   r0, r9
   mov   r1, #7
   bl    modsub      @ c = (woff + d - 1 + 7) % IW(7)
@@ -57,7 +58,7 @@ mod10add0:
   mov   r1, #10
   bl    modsub      @ d%10
   add   r0, r0, #48 @ + '0'
-  strb   r0, [r11, r10] @ canvas[b] = d%10 + '0'
+  strb  r0, [r11, r10] @ canvas[b] = d%10 + '0'
   cmp   r9, #6      @ if(c >= IW(7)-1) {
   addge r5, r5, #1  @   r++ }
   add   r6, r6, #1  @ d++
