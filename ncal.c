@@ -74,36 +74,39 @@ monthlen(int y, int m)
  */
 #define IW          (7) // 1 week
 #define CW          (3) // 1日分の表示にとる文字数(1日で3文字分確保する)
-#define OW          (21)// Width（3文字*7日)
+#define OW          (66)// Width（3文字*7日+余白1マス*3ヶ月分)
 #define OH          (6) // Height(月始まりが土曜に来ると縦は最大6行になる)
 #define MAX_CANVAS  (OW*OH) // 最大で必要なマス数
 
 char canvas[MAX_CANVAS];
 
 int
-mk1cal(int y, int m)
-{
+mk1cal(int y, int m) {
     int  d;
     int  dlen;
     int  woff;
     int  c, r;
     int  b;
+    int  count;
 
-    dlen = monthlen(y, m);
-    woff = monthwoffset(y, m, 1);
 
-    r = 0;
-    for(d=1;d<=dlen;d++) {
-        c = (woff+d-1+7)%IW;
-        b = r*OW+c*CW;
-        if(d>=10) {
-            canvas[b] = d/10 + '0';
+    r = 0; count = 0;
+    for(count=0; count<3; count++, r = 0) {
+        dlen = monthlen(y, m);
+        woff = monthwoffset(y, m, 1);
+        for(d=1;d<=dlen;d++) {
+            c = (woff+d-1+7)%IW;
+            b = r*OW+c*CW+count*22;
+            if(d>=10) {
+                canvas[b] = d/10 + '0';
+            }
+            b++;
+            canvas[b] = d%10 + '0';
+            if(c>=IW-1) {
+                r++;
+            }
         }
-        b++;
-        canvas[b] = d%10 + '0';
-        if(c>=IW-1) {
-            r++;
-        }
+        m += 1;
     }
     return 0;
 }

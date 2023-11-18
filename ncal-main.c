@@ -16,20 +16,34 @@ void printday() {
     // 曜日の表示
     pch('M');pch('o');pch(' ');pch('T');pch('u');pch(' ');pch('W');pch('e');
     pch(' ');pch('T');pch('h');pch(' ');pch('F');pch('r');pch(' ');
-    pch('S');pch('a');pch(' ');pch('S');pch('u');pch('\n');
+    pch('S');pch('a');pch(' ');pch('S');pch('u');pch(' ');
 }
 
 void printcal(int y, int m) {
     int i, j;
     // 年月の表示
-    for(i=0; i<=6; i++){
+    for(j=0; j<3; j++) {
+       for(i=0; i<=6; i++){
+            pch(' ');
+       }
+        pdec(y);
         pch(' ');
-   }
-    pdec(y);
-    pch(' ');
-    pdec(m);
+        pdec(m);
+        for(i=0; i<=8; i++){
+            pch(' ');
+        }
+        m++;
+        if(m==13) {
+            y++;
+            m -= 12;
+        }
+    }
     pch('\n');
-    printday();
+    for(j=0; j<3; j++){
+        printday();
+        pch(' ');
+    }
+    pch('\n');
     for(i=0;i<MAX_CANVAS;i++) {
         if(canvas[i]) {
             printf("%c", canvas[i]);
@@ -55,6 +69,7 @@ int main(int argc, char *argv[])
     }
 
     memset(canvas, ' ', sizeof(canvas));
+    // TODO: ここをforで回せば3ヶ月で一段にしてできるかも
     mk1cal(y, m, canvas);
     printcal(y, m);
     exit(0);
