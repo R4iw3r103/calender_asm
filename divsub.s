@@ -3,6 +3,7 @@
   .type divsub, %function
 
 divsub:
+  push {r1-r2}
   mov r2, r1
   mov r1, r0
   mov r0, #0
@@ -14,4 +15,5 @@ loop:
   sub r1, r1, r2
   b loop
 loopend:
+  pop {r1-r2}
   bx lr

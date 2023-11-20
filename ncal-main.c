@@ -8,7 +8,7 @@
 #define MAX_CANVAS  (OW*OH) // 最大で必要なマス数
 
 char canvas[MAX_CANVAS];
-extern int mk1cal(int, int, char[]);
+extern int mk1cal(int, int, char[], int);
 extern int pdec(int);
 extern char pch(int);
 
@@ -58,19 +58,44 @@ int main(int argc, char *argv[])
 {
     int y;
     int m;
+    int n;
+    int i, j;
 
-    if(argc==3) {
+    if(argc==4) {
         y = atoi(argv[1]);
         m = atoi(argv[2]);
+        n = atoi(argv[3]) - 1;
+        // n = atoi(argv[3])
     } else {
-        printf("usage: %s y m              - one month\n",
+        printf("usage: %s y m n\n",
             argv[0]);
         exit(9);
     }
 
     memset(canvas, ' ', sizeof(canvas));
     // TODO: ここをforで回せば3ヶ月で一段にしてできるかも
-    mk1cal(y, m, canvas);
-    printcal(y, m);
+
+    while (n/3 >= 1){
+        mk1cal(y, m, canvas, 2);
+        printcal(y, m);
+        pch('\n');
+        for (j=0; j<3; j++){
+            m++;
+            if(m==13) {
+            y++;
+            m -= 12;
+            }
+        }
+        n -= 3;
+        int canvas[] = {};
+        printf("%d\n", n);
+    }
+    if (n/3 == 0) {
+       mk1cal(y, m, canvas, n);
+       printcal(y, m);
+    }
+    pch('\n');
+    printf("%d\n", n);
+
     exit(0);
 }
