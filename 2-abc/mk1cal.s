@@ -20,6 +20,9 @@ mk1cal:
   mov   r12, #0     @ count = 0
 
 loop:
+  cmp   r12, #2
+  bgt   loopend
+
   @ 13月になった時に1年足して1月にリセット
   cmp   r4, #13
   addge r3, r3, #1
@@ -39,15 +42,12 @@ loop:
   mov   r5, #0      @ r = 0
   mov   r6, #1      @ d = 1
 
-@ TODO: ここから上まで完了
 loop1:
   cmp   r6, r7
   addgt r12, r12, #1@ count++
   addgt r4, r4, #1
   bgt   loop        @ d<=dlen
 
-  cmp   r12, #2
-  bgt   loopend
   @ add   r6, r6, #1  @ d++ )
   add   r9, r8, r6  @ c = (woff + d)
   sub   r9, r9, #1  @ c = (woff + d - 1)
