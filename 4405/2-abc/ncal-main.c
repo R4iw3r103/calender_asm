@@ -3,10 +3,12 @@
 #include <string.h>
 #define IW          (7) // 1 week
 #define CW          (3) // 1日分の表示にとる文字数(1日で3文字分確保する)
-#define OW          (21)// Width（3文字*7日+余白1マス*3ヶ月分)
+#define OW          (66)// Width（3文字*7日+余白1マス*3ヶ月分)
 #define OH          (6) // Height(月始まりが土曜に来ると縦は最大6行になる+年月と曜日の枠で2行)
+#define MAX_CANVAS  (OW*OH) // 最大で必要なマス数
 
-extern int mk1cal(int, int, char[], int);
+char canvas[MAX_CANVAS];
+extern int mk1cal(int, int, char[]);
 extern int pdec(int);
 extern char pch(int);
 
@@ -17,9 +19,31 @@ void printday() {
     pch('S');pch('a');pch(' ');pch('S');pch('u');pch(' ');
 }
 
-void printcal(int y, int m, char *canvas, int MAX_CANVAS) {
+void printcal(int y, int m) {
     int i, j;
-
+    // 年月の表示
+    for(j=0; j<3; j++) {
+       for(i=0; i<=6; i++){
+            pch(' ');
+       }
+        pdec(y);
+        pch(' ');
+        pdec(m);
+        for(i=0; i<=8; i++){
+            pch(' ');
+        }
+        m++;
+        if(m==13) {
+            y++;
+            m -= 12;
+        }
+    }
+    pch('\n');
+    for(j=0; j<3; j++){
+        printday();
+        pch(' ');
+    }
+    pch('\n');
     for(i=0;i<MAX_CANVAS;i++) {
         if(canvas[i]) {
             printf("%c", canvas[i]);
@@ -32,16 +56,12 @@ void printcal(int y, int m, char *canvas, int MAX_CANVAS) {
 
 int main(int argc, char *argv[])
 {
-    int MAX_CANVAS = OW * OH * atoi(argv[3]);
     int y;
     int m;
-    int n;
-    char canvas[MAX_CANVAS];
 
-    if(argc==4) {
+    if(argc==3) {
         y = atoi(argv[1]);
         m = atoi(argv[2]);
-        n = atoi(argv[3]);
     } else {
         printf("usage: %s y m              - one month\n",
             argv[0]);
@@ -49,7 +69,7 @@ int main(int argc, char *argv[])
     }
 
     memset(canvas, ' ', sizeof(canvas));
-    mk1cal(y, m, canvas, n);
-    printcal(y, m, canvas, MAX_CANVAS);
+    mk1cal(y, m, canvas);
+    printcal(y, m);
     exit(0);
 }
