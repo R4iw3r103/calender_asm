@@ -19,6 +19,9 @@ mk1cal:
   mov   r2, #0     @ count = 0
 
 loop:
+  cmp   r12, #2
+  bgt   loopend
+
   @ 13月になった時に1年足して1月にリセット
   cmp   r5, #13
   addge r4, r4, #1
@@ -46,10 +49,15 @@ loop1:
   addgt r5, r5, #1
   bgt   loop        @ d<=dlen
 
+<<<<<<< HEAD:mk1cal.s
   cmp   r2, r3
   bgt   loopend
   @ add   r12, r12, #1  @ d++ )
   add   r9, r8, r12  @ c = (woff + d)
+=======
+  @ add   r6, r6, #1  @ d++ )
+  add   r9, r8, r6  @ c = (woff + d)
+>>>>>>> 29befce:2-abc/mk1cal.s
   sub   r9, r9, #1  @ c = (woff + d - 1)
   add   r9, r9, #7  @ c = (woff + d - 1 + 7)
   add   r9, r9, #6  @ c = (woff + d - 1 + 7 + 6), 月曜始まりにする
